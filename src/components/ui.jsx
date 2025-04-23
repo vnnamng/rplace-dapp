@@ -5,9 +5,12 @@ import React from "react";
 export const Button = ({ className = "", pulse = false, ...props }) => (
   <button
     {...props}
-    className={`px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 ${
-      pulse ? "animate-pulse shadow-lg shadow-blue-400/40" : ""
-    } ${className}`}
+    className={`px-4 py-2 rounded
+      bg-orange-500 hover:bg-orange-400 text-white dark:bg-orange-600 dark:hover:bg-orange-500
+      disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300
+      ${
+        pulse ? "animate-pulse shadow-lg shadow-orange-500/40" : ""
+      } ${className}`}
   />
 );
 

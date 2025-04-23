@@ -16,6 +16,13 @@ export default function RPlaceApp() {
   const [account, setAccount] = useState(null);
 
   useEffect(() => {
+    const isDarkMode = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    document.documentElement.classList.toggle("dark", isDarkMode);
+  }, []);
+  /* Connect to wallet */
+  useEffect(() => {
     const provider = window.ethereum
       ? new ethers.BrowserProvider(window.ethereum)
       : new ethers.JsonRpcProvider(RPC_URL);
