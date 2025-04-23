@@ -48,6 +48,30 @@ export default function RPlaceApp() {
   const decodeColours = (arr) =>
     arr instanceof Uint8Array ? arr : new Uint8Array(arr.map(Number));
 
+  /* === LEADERBOARD DATA (two orders) === */
+  const walletStats = useMemo(() => {
+    const stats = new Map();
+    for (let i = 0; i < owners.length; i++) {
+      const o = owners[i];
+      if (o === ethers.ZeroAddress) continue;
+      const prev = stats.get(o) || { pixels: 0, value: 0n };
+      stats.set(o, {
+        pixels: prev.pixels + 1,
+        value: prev.value + prices[i],
+      });
+    }
+
+    const arr = Array.from(stats, ([addr, s]) => ({ addr, ...s }));
+    return {
+      byValue: [...arr].sort((a, b) =>
+        b.value === a.value ? b.pixels - a.pixels : Number(b.value - a.value)
+      ),
+      byPixels: [...arr].sort((a, b) =>
+        b.pixels === a.pixels ? Number(b.value - a.value) : b.pixels - a.pixels
+      ),
+    };
+  }, [owners, prices]);
+
   const loadPixels = useCallback(async () => {
     if (!readContract) return;
     try {
@@ -198,6 +222,69 @@ export default function RPlaceApp() {
                 </>
               ) : (
                 <p className="text-gray-500">Hover a pixel to see details</p>
+              )}
+            </CardContent>
+          </Card>
+          {/* ── Leaderboard #1 – By Value ────────────── */}
+          <Card className="mt-4 bg-gray-50 border border-gray-200">
+            <CardContent>
+              <p className="font-semibold mb-2">Top wallets by total ETH</p>
+
+              {walletStats.byValue.length === 0 ? (
+                <p className="text-gray-500">No data yet</p>
+              ) : (
+                <ol className="space-y-1">
+                  {walletStats.byValue.slice(0, 10).map((w, i) => (
+                    <li
+                      key={w.addr}
+                      className="grid grid-cols-[auto_1fr_auto] gap-x-1 items-start text-sm"
+                    >
+                      {/* index */}
+                      <span>{i + 1}.</span>
+
+                      {/* full address, allowed to wrap */}
+                      <span className="break-all font-mono">{w.addr}</span>
+
+                      {/* right-hand value, kept on one line */}
+                      <span className="whitespace-nowrap">
+                        {ethers.formatEther(w.value)} ETH
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* ── Leaderboard #2 – By Pixels ───────────── */}
+          <Card className="mt-4 bg-gray-50 border border-gray-200">
+            <CardContent>
+              <p className="font-semibold mb-2">Top wallets by pixel count</p>
+
+              {walletStats.byPixels.length === 0 ? (
+                <p className="text-gray-500">No data yet</p>
+              ) : (
+                <ol className="space-y-1">
+                  {walletStats.byPixels.slice(0, 10).map((w, i) => (
+                    <li
+                      key={w.addr}
+                      className="grid grid-cols-[auto_1fr_auto] gap-x-1 items-start text-sm"
+                    >
+                      {/* index */}
+                      <span>{i + 1}.</span>
+
+                      {/* full address, allowed to wrap */}
+                      <span className="break-all font-mono">{w.addr}</span>
+
+                      {/* right-hand value, kept on one line */}
+                      <span className="whitespace-nowrap">
+                        <span className="whitespace-nowrap">
+                          {w.pixels} pixels
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
               )}
             </CardContent>
           </Card>
