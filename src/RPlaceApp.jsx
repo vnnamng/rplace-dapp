@@ -15,7 +15,9 @@ export default function RPlaceApp() {
   const [readContract, setReadContract] = useState(null);
   const [writeContract, setWriteContract] = useState(null);
   const [account, setAccount] = useState(null);
-
+  useEffect(() => {
+    document.title = "RPlace - Live Canvas";
+  }, []);
   useEffect(() => {
     const isDarkMode = window.matchMedia(
       "(prefers-color-scheme: dark)"
