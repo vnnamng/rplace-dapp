@@ -4,6 +4,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ethers } from "ethers";
+import { Copy } from "lucide-react";
 
 import { Button, Card, CardContent } from "./components/ui";
 import Pixel from "./components/pixel";
@@ -208,23 +209,7 @@ export default function RPlaceApp() {
         </div>
 
         {/* Info panel */}
-        <div className="min-w-[220px] lg:w-64">
-          <Card className="bg-gray-50 border border-gray-200">
-            <CardContent>
-              {hoverInfo ? (
-                <>
-                  <p className="font-semibold mb-1">
-                    Pixel ({hoverInfo.x}, {hoverInfo.y})
-                  </p>
-                  <p>Colour index: {hoverInfo.colourIdx}</p>
-                  <p>Owner: {shorten(hoverInfo.owner)}</p>
-                  <p>Last price: {ethers.formatEther(hoverInfo.price)} ETH</p>
-                </>
-              ) : (
-                <p className="text-gray-500">Hover a pixel to see details</p>
-              )}
-            </CardContent>
-          </Card>
+        <div className="min-w-[220px] lg:w-64 space-y-4">
           {/* ── Leaderboard #1 – By Value ────────────── */}
           <Card className="mt-4 bg-gray-50 border border-gray-200">
             <CardContent>
@@ -234,23 +219,52 @@ export default function RPlaceApp() {
                 <p className="text-gray-500">No data yet</p>
               ) : (
                 <ol className="space-y-1">
-                  {walletStats.byValue.slice(0, 10).map((w, i) => (
-                    <li
-                      key={w.addr}
-                      className="grid grid-cols-[auto_1fr_auto] gap-x-1 items-start text-sm"
-                    >
-                      {/* index */}
-                      <span>{i + 1}.</span>
+                  {walletStats.byPixels.slice(0, 10).map((w, i) => {
+                    const isMe =
+                      account && account.toLowerCase() === w.addr.toLowerCase();
+                    return (
+                      <li
+                        key={w.addr}
+                        /* highlight rule unchanged */
+                        className={`grid grid-cols-[auto_1fr_auto] gap-x-1 items-start text-sm ${
+                          isMe
+                            ? "bg-yellow-50 border-l-4 border-yellow-400 font-semibold"
+                            : ""
+                        }`}
+                      >
+                        {/* index */}
+                        <span>{i + 1}.</span>
 
-                      {/* full address, allowed to wrap */}
-                      <span className="break-all font-mono">{w.addr}</span>
+                        {/* address + copy button */}
+                        <span
+                          className="flex items-center gap-1 break-all font-mono"
+                          title={w.addr}
+                        >
+                          {shorten(w.addr)}
+                          <button
+                            onClick={() =>
+                              navigator.clipboard.writeText(w.addr)
+                            }
+                            className="p-0.5 hover:text-blue-600"
+                            title="Copy address"
+                          >
+                            <Copy size={14} strokeWidth={2} />
+                          </button>
+                        </span>
 
-                      {/* right-hand value, kept on one line */}
-                      <span className="whitespace-nowrap">
-                        {ethers.formatEther(w.value)} ETH
-                      </span>
-                    </li>
-                  ))}
+                        {/* value – compact display, full on hover */}
+                        {(() => {
+                          const full = ethers.formatEther(w.value);
+                          const short = full.slice(0, 6); // e.g. “0.00023”
+                          return (
+                            <span className="whitespace-nowrap" title={full}>
+                              {short} ETH
+                            </span>
+                          );
+                        })()}
+                      </li>
+                    );
+                  })}
                 </ol>
               )}
             </CardContent>
@@ -265,26 +279,64 @@ export default function RPlaceApp() {
                 <p className="text-gray-500">No data yet</p>
               ) : (
                 <ol className="space-y-1">
-                  {walletStats.byPixels.slice(0, 10).map((w, i) => (
-                    <li
-                      key={w.addr}
-                      className="grid grid-cols-[auto_1fr_auto] gap-x-1 items-start text-sm"
-                    >
-                      {/* index */}
-                      <span>{i + 1}.</span>
+                  {walletStats.byPixels.slice(0, 10).map((w, i) => {
+                    const isMe =
+                      account && account.toLowerCase() === w.addr.toLowerCase();
+                    return (
+                      <li
+                        key={w.addr}
+                        /* highlight rule unchanged */
+                        className={`grid grid-cols-[auto_1fr_auto] gap-x-1 items-start text-sm ${
+                          isMe
+                            ? "bg-yellow-50 border-l-4 border-yellow-400 font-semibold"
+                            : ""
+                        }`}
+                      >
+                        {/* index */}
+                        <span>{i + 1}.</span>
 
-                      {/* full address, allowed to wrap */}
-                      <span className="break-all font-mono">{w.addr}</span>
+                        {/* address + copy button */}
+                        <span
+                          className="flex items-center gap-1 break-all font-mono"
+                          title={w.addr}
+                        >
+                          {shorten(w.addr)}
+                          <button
+                            onClick={() =>
+                              navigator.clipboard.writeText(w.addr)
+                            }
+                            className="p-0.5 hover:text-blue-600"
+                            title="Copy address"
+                          >
+                            <Copy size={14} strokeWidth={2} />
+                          </button>
+                        </span>
 
-                      {/* right-hand value, kept on one line */}
-                      <span className="whitespace-nowrap">
-                        <span className="whitespace-nowrap">
+                        {/* value – compact display, full on hover */}
+                        <span className="whitespace-nowrap" title={w.pixels}>
                           {w.pixels} pixels
                         </span>
-                      </span>
-                    </li>
-                  ))}
+                      </li>
+                    );
+                  })}
                 </ol>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gray-50 border border-gray-200">
+            <CardContent>
+              {hoverInfo ? (
+                <>
+                  <p className="font-semibold mb-1">
+                    Pixel ({hoverInfo.x}, {hoverInfo.y})
+                  </p>
+                  <p>Colour index: {hoverInfo.colourIdx}</p>
+                  <p>Owner: {shorten(hoverInfo.owner)}</p>
+                  <p>Last price: {ethers.formatEther(hoverInfo.price)} ETH</p>
+                </>
+              ) : (
+                <p className="text-gray-500">Hover a pixel to see details</p>
               )}
             </CardContent>
           </Card>
