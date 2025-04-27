@@ -16,9 +16,6 @@ export default function RPlaceApp() {
   const [writeContract, setWriteContract] = useState(null);
   const [account, setAccount] = useState(null);
   useEffect(() => {
-    document.title = "RPlace - Live Canvas";
-  }, []);
-  useEffect(() => {
     const isDarkMode = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
@@ -178,7 +175,55 @@ export default function RPlaceApp() {
   return (
     <div className="min-h-screen bg-white text-black p-6 space-y-6">
       <h1 className="text-2xl font-bold">RPlaceV2 DApp</h1>
-
+      <div className="mt-6 space-y-2 text-sm text-gray-700">
+        <p>
+          <strong>How to Use:</strong>
+        </p>
+        <ol className="list-decimal list-inside space-y-1">
+          <li>
+            Download and install{" "}
+            <a
+              className="text-blue-600 underline"
+              href="https://metamask.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MetaMask
+            </a>
+            , create a Sepolia wallet, then click{" "}
+            <strong>Connect Wallet</strong>.
+          </li>
+          <li>
+            Get SepoliaETH from a faucet:
+            <ul className="list-disc list-inside ml-5">
+              <li>
+                <a
+                  className="text-blue-600 underline"
+                  href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Google Cloud Faucet
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-blue-600 underline"
+                  href="https://sepolia-faucet.pk910.de/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  PK910 Faucet
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Select pixels on the canvas, choose a color from the palette, enter
+            the ETH price per pixel, and click <strong>Buy</strong>.
+          </li>
+        </ol>
+      </div>
       {!account ? (
         <Button onClick={connectWallet}>Connect Wallet</Button>
       ) : (
