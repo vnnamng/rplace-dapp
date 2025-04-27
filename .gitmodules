@@ -1,0 +1,3 @@
+[submodule "rplace_contract"]
+	path = rplace_contract
+	url = https://github.com/vnnamng/rplace_contract
