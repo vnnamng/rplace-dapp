@@ -35,3 +35,23 @@ This DApp is deployed on the **Sepolia** Ethereum testnet.
 
 - Front-end: React + Vite ([src/](src/))
 - Smart contract: Solidity ([rplace_contract/contracts/1_PixelWarV2.sol](rplace_contract/contracts/1_PixelWarV2.sol))
+
+## How to Run Locally
+### Front-End
+1. Clone the repository:
+   ```bash
+   git clone
+    cd rplace-dapp
+    ```
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
+3. Start the development server:
+    ```bash
+    npm run dev
+    ```
+4. Open your browser and navigate to `http://localhost:5173`.
+5. Connect your MetaMask wallet and interact with the DApp.
+### Smart Contract
+1. To deploy the smart contract, clone the submodule and deploy on Remix IDE. 
