@@ -1,12 +1,37 @@
-# React + Vite
+# RPlaceV2 DApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+RPlaceV2 is a decentralized pixel canvas game inspired by Reddit's r/place, built on Ethereum. Users can connect their wallets, buy pixels, and compete for canvas ownership in real time.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Live Front-End Demo](https://vnnamng.github.io/rplace-dapp/)
 
-## Expanding the ESLint configuration
+## Ethereum Testnet
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This DApp is deployed on the **Sepolia** Ethereum testnet.
+
+- **RPC URL:** https://rpc.ankr.com/eth_sepolia
+
+## Features
+
+- Connect with MetaMask and interact with the canvas.
+- Buy one or more pixels by selecting them, choosing a color, and setting a price in ETH.
+- Leaderboards for top wallets by ETH spent and pixel count.
+- Real-time updates via smart contract events.
+
+## How to Use
+
+1. Install [MetaMask](https://metamask.io/) and create a wallet on Sepolia.
+2. Get SepoliaETH from a faucet (e.g., [Google Cloud Faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)).
+3. Visit the [live demo](https://your-deployed-frontend-link.com) and connect your wallet.
+4. Select pixels, choose a color, set the ETH price per pixel, and click **Buy**.
+
+## Contract Details
+
+- **Contract Address:** `0x84B0FD3dd1288542f4E189f8170eB94B303214C3`
+- **ABI:** See [`src/constants.js`](src/constants.js)
+
+## Development
+
+- Front-end: React + Vite ([src/](src/))
+- Smart contract: Solidity ([rplace_contract/contracts/1_PixelWarV2.sol](rplace_contract/contracts/1_PixelWarV2.sol))
